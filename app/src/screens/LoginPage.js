@@ -1,71 +1,72 @@
 import { Text,
     View,
     StyleSheet,
-    TextInput,
-    Pressable,
     Image, 
   } from "react-native";
   
-  import Loading from "../components/Loading";
-  import React, { useState } from "react";
+  import {Loading, CustomTextInput, CustomButton} from "../components/";
+  import React, {useState, useEffect} from "react";
+  import { useSelector, useDispatch } from "react-redux";
+  import { login, autoLogin } from "../redux/userSlice";
+  import { setIsLoading } from "../redux/userSlice";
   
 const LoginPage = ({navigation}) => {
+
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
   
-    const [email, setEmail] = useState("");
-    const [pass, setPass] = useState("");
-    const [result, setResult] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
+  const {isLoading} = useSelector((state) => state.user);
   
-    console.log(email);
-    console.log(pass);
-    console.log(isLoading);
+  // dispatch function = to call the action
+  const dispatch = useDispatch();
+
+  // User already logged in
+  useEffect(() => {
+    dispatch(autoLogin());
+  }, []);
   
     return (
       <View style={styles.container}>
-  
+        <Text style={styles.welcome}>Welcome</Text>
         <Image 
         source={require("../../../assets/login/loginIcon.png")}
         style={styles.image}/>
-  
-        <Text style={styles.welcome}>Welcome {result}</Text>
-  
-        <Text style={styles.outside}>Email</Text>
-        <TextInput
-          inputModel="email"
-          placeholder="Enter your email"
-          style={styles.txtStyle} 
-          onChangeText={(text) => setEmail(text)}
-          value={email}
-        />
-        <Text style={styles.outside}>Password</Text>
-        <TextInput
-          secureTextEntry={true}
-          placeholder="Enter your password"
-          style={styles.txtStyle} 
-          onChangeText={setPass}
-          value={pass}
-        />
-  
-        <Pressable 
-          onPress={() => setIsLoading(true)}
-          style={({pressed}) => [{
-            backgroundColor: pressed ? "lightblue" : "blue"
-          },styles.button]}>
-  
-            <Text style={styles.loginText}>Login</Text>
-        </Pressable>
 
-        <Pressable 
-          onPress={() => navigation.navigate("Signup")}
-          style={({pressed}) => [{
-            backgroundColor: pressed ? "lightblue" : "gray",
-            marginTop: 30,
-          },styles.signupButton]}>
-  
-            <Text style={styles.loginText}>Sing Up</Text>
-        </Pressable>
+        <CustomTextInput 
+          title="Email"
+          placeholder="Enter your email"
+          secureTextEntry={false}
+          onChangeText={(email)=> setEmail(email)}
+          value={email}
+          />
+
+        <CustomTextInput
+          title="Password"
+          placeholder="Enter your password"
+          secureTextEntry={true}
+          onChangeText={(pass)=> setPassword(pass)}
+          value={password}
+        />
+
+        <CustomButton 
+          buttonText="Login"
+          setWidth="50%"
+          handleOnPress={() => dispatch(login({email, password}))}
+          buttonColor="blue"
+          pressedButtonColor="lightblue"
+        />
+
+        <CustomButton 
+          buttonText="Sign Up"
+          setWidth="30%"
+          handleOnPress={() => navigation.navigate("Signup")}
+          buttonColor="gray"
+          pressedButtonColor="lightblue"
+        />
+
         
-        {isLoading ? <Loading changeIsLoading={() => setIsLoading(false)} /> : null}
+        {isLoading ? <Loading changeIsLoading={() => dispatch(setIsLoading(false))} /> : null}
       </View>
     );
   }
@@ -75,32 +76,9 @@ const LoginPage = ({navigation}) => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: "#fff",
+      backgroundColor: "lightgray",
       alignItems: "center",
       justifyContent: "center", 
-    },
-    txtStyle: {
-      height: "4%",
-      width: "50%",
-      borderRadius: 20,
-      borderColor: "black",
-      borderWidth: 3,
-      marginVertical: "1.5%",
-      textAlign: "center",
-    },
-    outside: {
-      fontWeight: "bold",
-      fontSize: 20,
-      color: "black",
-      marginVertical: "1.5%",
-      textAlign: "center",
-    },
-    button: {
-      padding: 10,
-      borderRadius: 10,
-      marginVertical: "1.5%",
-      width: "50%",
-      height: "6%",
     },
     image: {
       width: 150,
@@ -110,20 +88,7 @@ const LoginPage = ({navigation}) => {
       fontWeight: "bold",
       fontSize: 30,
       color: "black",
-      marginVertical: "1.5%",
-    },
-    signupButton: {
-      padding: 10,
-      borderRadius: 10,
-      marginVertical: "1.5%",
-      width: "30%",
-      height: "5%",
-    },
-    loginText: {
-      fontWeight: "bold",
-      color: "white",
-      fontSize: 20,
-      textAlign: "center",
+      marginVertical: 30,
     },
   });
   

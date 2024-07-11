@@ -1,22 +1,30 @@
-import React from 'react'
-import LoginPage from './src/screens/LoginPage'
-import {NavigationContainer} from '@react-navigation/native';
-import SignupPage from './src/screens/SignupPage';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import React, { useEffect } from 'react';
+import RootNavigation from './src/navigation/rootNavigation';
+import { Provider, useDispatch, useSelector } from 'react-redux';
+import { store } from './src/redux/store';
+import { getAllData } from './src/redux/dataSlice';
+import { Loading } from './src/components';
+import { AppDispatch, RootState } from './src/redux/store'; // Yeni eklenen import
 
-const Stack = createNativeStackNavigator();
-
-const index = () => {
+const IndexWrapper = () => {
   return (
-    <NavigationContainer independent={true}>
-      <Stack.Navigator screenOptions={{headerShown:false}}>
+    <Provider store={store}>
+      <Index />
+    </Provider>
+  );
+};
 
-        <Stack.Screen name="Login" component={LoginPage} />
-        <Stack.Screen name="Signup" component={SignupPage} />
-        
-      </Stack.Navigator>
-    </NavigationContainer>
-  )
-}
+const Index = () => {
+  const dispatch = useDispatch<AppDispatch>(); // Tipini belirtin
+  const { isLoading, isSaved } = useSelector((state: RootState) => state.data); // Tipini belirtin
 
-export default index
+  useEffect(() => {
+    dispatch(getAllData());
+  }, [dispatch, isSaved]);
+
+  if (isLoading) return <Loading />;
+
+  return <RootNavigation />;
+};
+
+export default IndexWrapper;
