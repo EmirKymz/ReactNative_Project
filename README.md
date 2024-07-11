@@ -1,50 +1,53 @@
-# Welcome to your Expo app 👋
+# React Native ile todo list uygulamasi
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+![Ekran Alıntısı](https://github.com/EmirKymz/ReactNative_Project/assets/99013427/4102566f-4c65-480b-bcde-c0627e34b12a)
 
-## Get started
 
-1. Install dependencies
+![signup](https://github.com/EmirKymz/ReactNative_Project/assets/99013427/e0ede901-5741-41dc-8a25-076d5575c138)
 
-   ```bash
-   npm install
-   ```
 
-2. Start the app
+![todo](https://github.com/EmirKymz/ReactNative_Project/assets/99013427/d2dc8d93-d730-4518-813e-96a439626514)
 
-   ```bash
-    npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+## React native ile proje oluşturmak
+```
+npx create-expo-app my-app
+cd my-app
+npx expo start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## useState
+```
+import React, { useState } from 'react';
 
-## Learn more
+const [state, setState] = useState(initialState);
+```
+bu şekilde bir kullanım ile state ve setState fonksiyonunu kullanabiliriz.
+initialState, state'in tipine göre değişebilir. Örneğin bir string ise "" veya null, bir number ise 0, bir array ise [] şeklinde başlatılabilir.
+state ve setstate fonksiyonu bir array döner. İlk eleman state'i, ikinci eleman ise state'i değiştiren fonksiyonu döner.
 
-To learn more about developing your project with Expo, look at the following resources:
+```
+onChangeText={(text) => setState(text)}
+value={name}
+//veya
+onChangeText={setState}
+value={name}
+```
+gibi bir kullanım ile state'i değiştirebiliriz.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+rnfes yazarak fonksiyonel component oluşturabiliriz.
 
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## pressable
+```
+import { Pressable } from 'react-native';
+<Pessable onPress={() => console.log('pressed')}>
+  <Text>Press me</Text>
+</Pressable>
+```
+Pressable componenti üzerine tıklandığında onPress fonksiyonunu çalıştırır.
+## kaynak
+```
+https://icons.expo.fyi/Index
+https://docs.swmansion.com/react-native-reanimated/docs/animations/withTiming
+https://reactnative.dev/
+github.com/Muhammed58
+```
